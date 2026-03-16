@@ -1,0 +1,72 @@
+name: Build and deploy backend to Azure Web App - webappgestionformacionesdev
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Show versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-app
+          path: ./backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-app
+          path: .
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_110B0715DB3C4DCC9D9D44A240A17237 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_36E3FB2FA0C74185B8B11A21EB7B8092 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_68AA7AEEA8D34F99A2803857941089E3 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'webappgestionformacionesdev'
+          slot-name: 'Production'
+          package: .
