@@ -1,0 +1,39 @@
+@use "../../styles/abstracts/colors" as colors;
+@use "../../styles/abstracts/variables" as vars;
+@use "../../styles/base/typography" as typo;
+
+
+.dashboard-card {
+    background-color: colors.$color__white;
+    border-radius: vars.$border-radius__12;
+    border: 1px solid colors.$color__light-grey;
+    padding: vars.$spacing__16;
+    text-align: left;
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: vars.$spacing__12;
+    }
+
+    .card {
+        &__subtitle {
+            display:block;
+            @include typo.body-medium(400);
+            color: colors.$color__primary;
+        }
+    
+        &__description {
+            @include typo.body-medium(400);
+            color: colors.$color__mid-grey;
+        }
+
+        //Estilo para el texto del titulo para poder reducir el tamaño
+&__title {
+            @include typo.body-large(700); 
+            
+            font-size: calc(100% - 4px);
+        }
+    }
+}

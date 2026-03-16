@@ -1,0 +1,66 @@
+@use "../../styles/abstracts/colors" as colors;
+@use "../../styles/abstracts/variables" as vars;
+@use "../../styles/base/typography" as typo;
+
+.custom-callout {
+	@include typo.body-small();
+	width: 100%;
+	color: colors.$color__mid-grey;
+	text-align: left;
+	display: flex;
+	gap: vars.$spacing__8;
+	align-items: center;
+	text-align: left;
+	margin-bottom: vars.$spacing__12;
+
+
+
+	span {
+		text-align: left;
+	}
+
+	&--info,
+	&--success,
+	&--warning,
+	&--error {
+		@include typo.body-medium();
+		text-align: center;
+		padding: vars.$spacing__8;
+	}
+
+	&--info {
+		color: colors.$color__accent-blue;
+		background-color: rgba(colors.$color__accent-blue, 0.2);
+
+		.base-icon {
+			color: colors.$color__accent-blue;
+		}
+	}
+
+	&--success {
+		color: colors.$color__accent-green;
+		background-color: rgba(colors.$color__accent-green, 0.2);
+
+		.base-icon {
+			color: colors.$color__accent-green;
+		}
+	}
+
+	&--warning {
+		color: colors.$color__accent-orange;
+		background-color: rgba(colors.$color__accent-orange, 0.2);
+
+		.base-icon {
+			color: colors.$color__accent-orange;
+		}
+	}
+
+	&--error {
+		color: colors.$color__accent-red;
+		background-color: rgba(colors.$color__accent-red, 0.2);
+
+		.base-icon {
+			color: colors.$color__accent-red;
+		}
+	}
+}

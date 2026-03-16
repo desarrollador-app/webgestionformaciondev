@@ -1,0 +1,126 @@
+@use "@/styles/abstracts/colors" as colors;
+@use "@/styles/abstracts/variables" as vars;
+@use "@/styles/base/typography" as typo;
+
+.main-content {
+    padding: vars.$spacing__32;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1600px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: vars.$spacing__16;
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    &__actions {
+        display: flex;
+        gap: vars.$spacing__12;
+    }
+}
+
+.section-main {
+    &__title {
+        @include typo.headline-small(600);
+        color: colors.$color__primary;
+    }
+    &__tags {
+        display: flex;
+        gap: vars.$spacing__8;
+        margin-top: vars.$spacing__8;
+    }
+}
+
+.section-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: vars.$spacing__20;
+    background-color: colors.$color__lighter-grey;
+    border-radius: vars.$border-radius__16;
+    margin-bottom: vars.$spacing__16;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: vars.$spacing__24;
+
+        .header-action {
+            display: flex;
+            gap: vars.$spacing__8;
+        }
+    }
+
+    &__title {
+        @include typo.label-large(600);
+        color: colors.$color__black;
+        margin-bottom: vars.$spacing__8;
+        text-align: left;
+    }
+
+    &__list {
+        @include typo.body-large();
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        color: colors.$color__black;
+
+        .label {
+            @include typo.label-large(600);
+            color: colors.$color__mid-grey;
+        }
+
+        li {
+            margin-bottom: vars.$spacing__4; 
+            display: grid;
+            grid-template-columns: minmax(0, 200px) 1fr;
+            gap: vars.$spacing__16;
+        }
+    }
+
+    &__table {
+        width: 100%;
+    }
+
+    &__misc {
+        width: 100%;
+    }
+
+    .content-header {
+        &__title {
+            @include typo.title-large(600);
+            color: colors.$color__mid-grey;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: vars.$spacing__12;
+    }
+    .section-content {
+        &__header {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            gap: vars.$spacing__12;
+        }
+    }
+}
+
+

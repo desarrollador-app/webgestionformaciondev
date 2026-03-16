@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<grupos>
+  <grupo>
+    <idAccion>3</idAccion>
+    <idGrupo>2</idGrupo>
+    <descripcion>Ejemplo grupo formativo</descripcion>
+    <NumeroParticipante>10</NumeroParticipante>
+    <fechaInicio>01/01/2021</fechaInicio>
+    <fechaFin>01/04/2021</fechaFin>
+    <responsable>Responsable</responsable>
+    <telefonoContacto>988888888</telefonoContacto>
+    <jornadaPresencial>
+      <centro>
+        <cif>A00000000</cif>
+        <nombreCentro>Centro presencial</nombreCentro>
+        <direccionDetallada>Dirección detallada</direccionDetallada>
+        <codPostal>28033</codPostal>
+        <localidad>Madrid</localidad>
+      </centro>
+      <lugarImparticion>
+	  	<cif>B00000000</cif>
+        <nombreCentro>Lugar impartición</nombreCentro>
+        <direccionDetallada>Dirección Detallada</direccionDetallada>
+        <codPostal>28033</codPostal>
+        <localidad>Madrid</localidad>
+      </lugarImparticion>
+      <horario>
+        <horaTotales>10</horaTotales>
+        <horaInicioTramo1>07:00</horaInicioTramo1>
+        <horaFinTramo1>12:00</horaFinTramo1>
+        <dias>LM</dias>
+      </horario>
+      <calendario>
+        <fecha_imparticion>01/01/2021</fecha_imparticion>
+        <horario_inicio_tramo1>09:00</horario_inicio_tramo1>
+        <horario_fin_tramo1>12:00</horario_fin_tramo1>
+        <horario_inicio_tramo2>16:00</horario_inicio_tramo2>
+        <horario_fin_tramo2>18:00</horario_fin_tramo2>
+      </calendario>
+      <calendario>
+        <fecha_imparticion>02/01/2021</fecha_imparticion>
+        <horario_inicio_tramo1>09:00</horario_inicio_tramo1>
+        <horario_fin_tramo1>12:00</horario_fin_tramo1>
+        <horario_inicio_tramo2>16:00</horario_inicio_tramo2>
+        <horario_fin_tramo2>18:00</horario_fin_tramo2>
+      </calendario>
+      <Tutor>
+        <numeroHoras>5</numeroHoras>
+        <tipoDocumento>10</tipoDocumento>
+        <documento>00000001R</documento>
+        <nombre>Nombre</nombre>
+        <apellido1>Primer Apellido</apellido1>
+        <apellido2>Segundo Apellido</apellido2>
+        <telefono>916666666</telefono>
+        <correoElectronico>c@c.com</correoElectronico>
+      </Tutor>
+      <Tutor>
+        <numeroHoras>5</numeroHoras>
+        <tipoDocumento>10</tipoDocumento>
+        <documento>00000002W</documento>
+        <nombre>Nombre 1</nombre>
+        <apellido1>Primer Apellido</apellido1>
+        <apellido2>Segundo Apellido</apellido2>
+        <telefono>917777777</telefono>
+        <correoElectronico>a@a.com</correoElectronico>
+      </Tutor>
+    </jornadaPresencial>
+    <distanciaTeleformacion>
+      <asistenciaTeleformacion>
+        <centro>
+          <cif>A00000000</cif>
+          <nombreCentro>Centro Asistencia Teleformación</nombreCentro>
+          <direccionDetallada>Dir Asistencia Teleformación</direccionDetallada>
+          <codPostal>28033</codPostal>
+          <localidad>Madrid</localidad>
+        </centro>
+        <telefono>922222222</telefono>
+      </asistenciaTeleformacion>
+      <horario>
+        <horaTotales>8</horaTotales>
+        <horaInicioTramo1>10:00</horaInicioTramo1>
+        <horaFinTramo1>12:00</horaFinTramo1>
+        <dias>LMXJ</dias>
+      </horario>
+      <Tutor>
+        <numeroHoras>8</numeroHoras>
+        <tipoDocumento>10</tipoDocumento>
+        <documento>00000001R</documento>
+        <nombre>Nombre</nombre>
+        <apellido1>Primer Apellido</apellido1>
+        <apellido2>Segundo Apellido</apellido2>
+        <telefono>919999999</telefono>
+        <correoElectronico>a@a.com</correoElectronico>
+        <tutoria>
+          <tipoTutoria>
+            <tutorias>1</tutorias>
+          </tipoTutoria>
+          <descripcion/>
+        </tutoria>
+        <tutoria>
+          <tipoTutoria>
+            <tutorias>2</tutorias>
+          </tipoTutoria>
+          <descripcion/>
+        </tutoria>
+      </Tutor>
+      <Tutor>
+        <numeroHoras>5</numeroHoras>
+        <tipoDocumento>10</tipoDocumento>
+        <documento>00000002W</documento>
+        <nombre>Nombre uno</nombre>
+        <apellido1>Primer Apellido</apellido1>
+        <apellido2>Segundo Apellido</apellido2>
+        <telefono>9188888888</telefono>
+        <correoElectronico>b@b.com</correoElectronico>
+        <tutoria>
+          <tipoTutoria>
+            <tutorias>1</tutorias>
+          </tipoTutoria>
+          <descripcion/>
+        </tutoria>
+        <tutoria>
+          <tipoTutoria>
+            <tutorias>4</tutorias>
+          </tipoTutoria>
+          <descripcion>Denominación para tipo Otras</descripcion>
+        </tutoria>
+      </Tutor>
+    </distanciaTeleformacion>
+    <aulaVirtual>
+      <medio>Medio utilizado aula virtual</medio>
+      <conexion>Modo conexión aula virtual</conexion>
+      <contacto>Persona de contacto aula virtual</contacto>
+      <telefono>910123456</telefono>
+      <bimodal>false</bimodal>
+	  <sinParticipantesEnCentro>true</sinParticipantesEnCentro>
+	  <sinDocentesEnCentro>false</sinDocentesEnCentro>
+    </aulaVirtual>
+    <EmpresasParticipantes>
+      <empresa>
+        <cifEmpresaParticipante>B00000000</cifEmpresaParticipante>
+        <jornadaLaboral>1</jornadaLaboral>
+      </empresa>
+      <empresa>
+        <cifEmpresaParticipante>C00000000</cifEmpresaParticipante>
+      </empresa>
+    </EmpresasParticipantes>
+    <observaciones>Ejemplo observaciones</observaciones>
+  </grupo>
+</grupos>

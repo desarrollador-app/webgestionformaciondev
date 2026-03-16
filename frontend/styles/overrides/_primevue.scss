@@ -1,0 +1,137 @@
+
+//Navbar
+.p-menubar {
+    justify-content:flex-end;
+    .p-menubar-start {
+        position: absolute;
+        left: $spacing__12;
+        top: $spacing__12;
+    }
+    .p-menubar-end {
+        margin-left:0;
+    }
+    .p-menuitem-active {
+        background-color: $color__secondary;
+        border-radius: 6px; //Prime Vue base
+    }
+
+    &.p-menubar-mobile {
+        .p-menubar-root-list {
+            background-color: $color__primary;
+        }
+    }
+}
+
+.p-datatable-paginator-bottom {
+    border-style: none !important;
+
+    .p-paginator.p-component {
+        background-color: transparent;
+    }
+}
+
+.p-button {
+    height: 36px;
+
+    &.p-button-outlined {
+        background-color: $color__white;
+        color: $color__primary;
+    }
+}
+
+//Dialog
+.p-dialog-header {
+    @include title-large(600);
+}
+
+.p-dialog-footer div{
+    display: flex;
+    gap: $spacing__12;
+    justify-content: flex-end;
+
+}
+
+//DataTable
+.p-datatable {
+    .p-datatable-thead > tr > th:not(:last-child) {
+        border-right: 1px solid $color__primary;
+    }
+    .p-datatable-tbody > tr > td {
+        border: 1px solid $color__light-grey;
+    }
+}
+
+
+//Datepicker
+.p-datepicker {
+    .p-datepicker-panel {
+        padding: 0;
+    }
+    .p-datepicker-header {
+        background-color: $color__secondary;
+        border-block-end: 1px solid $color__primary;
+
+        .p-datepicker-title button {
+            color: $color__white;
+        }
+        .p-button {
+            color: $color__white;
+        }
+    }
+    .p-datepicker-day-view {
+        margin-top: 0;
+        thead {
+            background-color: $color__secondary;
+
+            .p-datepicker-weekday-cell span {
+                color: $color__white;
+            }
+        }
+    }
+    .p-datepicker-day-cell {
+        border: 1px solid $color__light-grey;
+        border-collapse: collapse;
+        padding:  $spacing__24 $spacing__12;
+    }
+}
+
+//Fileupload
+:deep(.p-fileupload-file) {
+    flex-wrap: nowrap;
+
+    .p-fileupload-file-badge,
+    .p-fileupload-file-thumbnail {
+        display: none;
+    }
+
+    .p-fileupload-file-actions {
+        max-width: 100px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+   
+}
+
+.p-fileupload-advanced {
+
+    .p-fileupload-header .p-fileupload-choose-button {
+        max-width: 200px;
+    }
+    .p-fileupload-header .p-fileupload-upload-button,
+    .p-fileupload-header .p-fileupload-cancel-button {
+        display: none;
+    }
+    .p-fileupload-file-badge,
+    .p-fileupload-file-thumbnail {
+        display: none;
+    }
+
+    .p-fileupload-file {
+        gap: 0;
+    }
+}
+
+.p-error {
+    color: $color__accent-red !important;
+}

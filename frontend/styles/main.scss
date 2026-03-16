@@ -1,0 +1,32 @@
+@forward './abstracts/colors';
+@forward './abstracts/variables';
+@forward './base/typography';
+@forward './base/reset';
+
+@use './abstracts/colors' as *;
+@use './abstracts/variables' as *;
+@use './base/typography' as *;
+@use './base/reset' as *;
+
+@import './components/filters';
+@import './overrides/primevue';
+
+.tarea-color-rojo {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.tarea-color-amarillo {
+  color: #ca8a04;
+  font-weight: 600;
+}
+
+.tarea-color-verde {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.tarea-color-azul {
+  color: #2563eb;
+  font-weight: 600;
+}

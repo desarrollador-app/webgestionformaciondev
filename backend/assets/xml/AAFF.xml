@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<AccionesFormativas>
+	<AccionFormativa>
+		<codAccion>0001</codAccion>
+		<nombreAccion>Accion Formativa 0001</nombreAccion>
+		<codGrupoAccion>035-05</codGrupoAccion>
+		<codAreaProfesional>ADGN</codAreaProfesional>
+		<modalidadPresencial>
+			<horasPr>10</horasPr>
+		</modalidadPresencial>
+		<nivelFormacion>0</nivelFormacion>
+		<objetivos>Estos son los objetivos de la Acción Formativa 0001</objetivos>
+		<contenidos>Estos son los contenidos de la Acción Formativa 0001</contenidos>
+	</AccionFormativa>
+	<AccionFormativa>
+		<codAccion>0002</codAccion>
+		<nombreAccion>Acción Formativa 0002</nombreAccion>
+		<codGrupoAccion>087-06</codGrupoAccion>
+		<modalidadTeleformacion>
+			<horasTe>100</horasTe>
+		</modalidadTeleformacion>
+		<cifPlataforma>A00000000</cifPlataforma>
+		<razonSocialPlataforma>Razón Social Plataforma</razonSocialPlataforma>
+		<uri>www.fundae.es</uri>
+		<usuario>UsuarioPlataforma</usuario>
+		<password>Contraseña</password>
+		<observaciones>OBSERVACIONES 0002</observaciones>
+		<objetivos>Estos son los objetivos de la Acción Formativa 0002</objetivos>
+		<contenidos>Estos son los contenidos de la Acción Formativa 0002 </contenidos>
+	</AccionFormativa>
+	<AccionFormativa>
+		<codAccion>0003</codAccion>
+		<nombreAccion>Acción Formativa 0003</nombreAccion>
+		<codGrupoAccion>087-06</codGrupoAccion>
+		<modalidadTeleformacion>
+			<horasPr>10</horasPr>
+			<horasTe>80</horasTe>
+		</modalidadTeleformacion>
+		<cifPlataforma>A00000000</cifPlataforma>
+		<razonSocialPlataforma>Razón Social Plataforma</razonSocialPlataforma>
+		<uri>www.fundae.es</uri>
+		<usuario>UsuarioPlataforma</usuario>
+		<password>Contraseña</password>
+		<observaciones>OBSERVACIONES 0003</observaciones>
+		<objetivos>Estos son los objetivos de la Acción Formativa 0003</objetivos>
+		<contenidos>Estos son los contenidos de la Acción Formativa 0003 </contenidos>
+	</AccionFormativa>
+	<AccionFormativa>
+		<codAccion>0004</codAccion>
+		<nombreAccion>Acción Formativa 0004</nombreAccion>
+		<codGrupoAccion>087-06</codGrupoAccion>
+		<codAreaProfesional>ADGD</codAreaProfesional>
+		<modalidadMixta>
+			<horasPr>20</horasPr>
+			<horasTe>80</horasTe>
+		</modalidadMixta>
+		<cifPlataforma>A00000000</cifPlataforma>
+		<razonSocialPlataforma>Razón Social Plataforma</razonSocialPlataforma>
+		<uri>www.fundae.es</uri>
+		<usuario>UsuarioPlataforma</usuario>
+		<password>Contraseña</password>
+		<observaciones>OBSERVACIONES 004</observaciones>
+		<nivelFormacion>1</nivelFormacion>
+		<objetivos>Estos son los objetivos de la Acción Formativa 0004</objetivos>
+		<contenidos>Estos son los contenidos de la Acción Formativa 0004 </contenidos>		
+		<empParticipantes>
+			<cif>B00000000</cif>
+			<infRLT>
+				<informaRLT>S</informaRLT>
+				<informe>
+					<valorinf>d</valorinf>
+					<discrepancia>
+						<fechaDis>01/01/2013</fechaDis>
+						<resuelto15>S</resuelto15>
+					</discrepancia>
+				</informe>
+			</infRLT>
+		</empParticipantes>
+		<empParticipantes>
+			<cif>D00000000</cif>
+			<infRLT>
+				<informaRLT>S</informaRLT>
+				<informe>
+					<valorinf>f</valorinf>
+				</informe>
+			</infRLT>
+		</empParticipantes>
+	</AccionFormativa>
+	<AccionFormativa>
+		<codAccion>0005</codAccion>
+		<nombreAccion>Accion Formativa 0005</nombreAccion>
+		<codGrupoAccion>035-05</codGrupoAccion>
+		<codAreaProfesional>ADGN</codAreaProfesional>
+		<modalidadPresencial>
+			<horasPr>10</horasPr>
+		</modalidadPresencial>
+		<nivelFormacion>0</nivelFormacion>
+		<objetivos>Estos son los objetivos de la Acción Formativa 0005</objetivos>
+		<contenidos>Estos son los contenidos de la Acción Formativa 0005</contenidos>
+		<empParticipantes>
+			<cif>B00000000</cif>
+			<infRLT>
+				<informaRLT>S</informaRLT>
+				<informe>
+					<valorinf>F</valorinf>
+				</informe>
+			</infRLT>
+		</empParticipantes>
+	</AccionFormativa>
+</AccionesFormativas>

@@ -1,0 +1,51 @@
+// Reset y estilos globales de la aplicación
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  font-family: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+#app {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+#nav {
+  padding: 32px;
+  
+  a {
+    font-weight: bold;
+    color: #3C7E98;
+  }
+}
+
+pre {
+  font-family: 'Roboto', sans-serif;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+input, select, .p-select {
+  height: 40px;
+}

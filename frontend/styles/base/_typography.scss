@@ -1,0 +1,190 @@
+//Typography
+$font-family__base: 'Roboto', sans-serif;
+
+$font-size__11: 11px;
+$font-size__12: 12px;
+$font-size__14: 14px;
+$font-size__16: 16px;
+$font-size__22: 22px;
+$font-size__24: 24px;
+$font-size__28: 28px;
+$font-size__32: 32px;
+$font-size__36: 36px;
+$font-size__45: 45px;
+$font-size__57: 57px;
+
+$line-height__16: 16px;
+$line-height__20: 20px;
+$line-height__24: 24px;
+$line-height__28: 28px;
+$line-height__32: 32px;
+$line-height__36: 36px;
+$line-height__40: 40px;
+$line-height__44: 44px;
+$line-height__52: 52px;
+$line-height__64: 64px;
+
+@mixin display-large($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__57;
+	line-height: $line-height__64;
+	font-weight: $weight;
+}
+
+@mixin display-medium($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__45;
+	line-height: $line-height__52;
+	font-weight: $weight;
+}
+
+@mixin display-small($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__36;
+	line-height: $line-height__44;
+	font-weight: $weight;
+}
+
+@mixin headline-large($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__32;
+	line-height: $line-height__40;
+	font-weight: $weight;
+}
+
+@mixin headline-medium($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__28;
+	line-height: $line-height__36;
+	font-weight: $weight;
+}
+
+@mixin headline-small($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__24;
+	line-height: $line-height__32;
+	font-weight: $weight;
+}
+
+@mixin title-large($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__22;
+	line-height: $line-height__28;
+	font-weight: $weight;
+}
+
+@mixin title-medium($weight: 500) {
+	font-family: $font-family__base;
+	font-size: $font-size__16;
+	line-height: $line-height__24;
+	font-weight: $weight;
+}
+
+@mixin title-small($weight: 500) {
+	font-family: $font-family__base;
+	font-size: $font-size__14;
+	line-height: $line-height__20;
+	font-weight: $weight;
+}
+
+@mixin label-large($weight: 500) {
+	font-family: $font-family__base;
+	font-size: $font-size__16;
+	line-height: $line-height__20;
+	font-weight: $weight;
+}
+
+@mixin label-medium($weight: 500) {
+	font-family: $font-family__base;
+	font-size: $font-size__12;
+	line-height: $line-height__16;
+	font-weight: $weight;
+}
+
+@mixin label-small($weight: 500) {
+	font-family: $font-family__base;
+	font-size: $font-size__11;
+	line-height: $line-height__16;
+	font-weight: $weight;
+}
+
+@mixin body-large($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__16;
+	line-height: $line-height__24;
+	font-weight: $weight;
+}
+
+@mixin body-medium($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__14;
+	line-height: $line-height__20;
+	font-weight: $weight;
+}
+
+@mixin body-small($weight: 400) {
+	font-family: $font-family__base;
+	font-size: $font-size__12;
+	line-height: $line-height__16;
+	font-weight: $weight;
+}
+
+.display-large {
+	@include display-large();
+}
+
+.display-medium {
+	@include display-medium();
+}
+
+.display-small {
+	@include display-small();
+}
+
+.headline-large {
+	@include headline-large();
+}
+
+.headline-medium {
+	@include headline-medium();
+}
+
+.headline-small {
+	@include headline-small();
+}
+
+.title-large {
+	@include title-large();
+}
+
+.title-medium {
+	@include title-medium();
+}
+
+.title-small {
+	@include title-small();
+}
+
+.label-large {
+	@include label-large();
+}
+
+.label-medium {
+	@include label-medium();
+}
+
+.label-small {
+	@include label-small();
+}
+
+.body-large {
+	@include body-large();
+}
+
+.body-medium {
+	@include body-medium();
+}
+
+.body-small {
+	@include body-small();
+}

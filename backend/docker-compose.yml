@@ -1,0 +1,32 @@
+services:
+  praxis-sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: praxis-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Aciturri2029
+    ports:
+      - "1433:1433"
+    volumes:
+      - praxis-sqlserver-data:/var/opt/mssql
+
+  praxis-backend:
+    build: .
+    container_name: praxis-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=sqlserver://host.docker.internal:1433;database=PraxisInterno;user=prisma_user;password=Password123!;encrypt=true;trustServerCertificate=true
+      - PORT=3000
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+      - GRAPH_SENDER_EMAIL=documentacion@centropraxis.com
+    depends_on:
+      - praxis-sqlserver
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  praxis-sqlserver-data:

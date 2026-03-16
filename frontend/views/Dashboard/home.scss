@@ -1,0 +1,54 @@
+@use '@/styles/main.scss' as *;
+
+.dashboard-container {
+    display: flex;
+    gap: $spacing__24;
+
+    &__section {
+        background-color: $color__lighter-grey;
+        border-radius: $border-radius__16;
+        align-items: flex-start;
+        padding: $spacing__16;
+        flex: 1;
+    }
+}
+
+.dashboard-section {
+    &__title {
+        @include headline-small(600);
+        color: $color__primary;
+        margin-bottom: $spacing__16;
+        text-align: left;
+    }
+
+    //Cambio de 2 a tres columnas
+    &--grupos {
+       .grupos-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $spacing__16;
+       }
+    }
+
+    &--tareas {
+        .tareas-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: $spacing__16;
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .dashboard-section {
+        &--grupos {
+            .grupos-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+    }
+}
