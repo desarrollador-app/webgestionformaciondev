@@ -1,9 +1,9 @@
 {
-    "name": "praxis-backend",
+    "name": "backend",
     "version": "1.0.0",
     "private": true,
     "engines": {
-        "node": "20.13.1"
+        "node": "20.x"
     },
     "main": "src/server.js",
     "scripts": {
