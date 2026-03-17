@@ -250,6 +250,7 @@ try {
     life: 3000
   })
 }
+}
 const handleSaveAccionFormativa = async (accionData) => {
     try {
        const newAccion = await createAccionFormativa(accionData)
