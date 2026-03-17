@@ -5,6 +5,7 @@
                 <h1 class="section-main__title">Acciones Formativas</h1>
             </div>
             <div class="section-header__actions">
+                <Button label="Descargar XML de AFF" @click= "descargarXMLSeleccionadas"/>
                 <Button label="Nueva Acción formativa" @click="showModal = true"/>
             </div>
         </div>
@@ -44,6 +45,7 @@
         </div>
 
         <DataTable 
+        v-model:selection= "selectedAcciones"
             :value="accionesFormativas" 
             :paginator="accionesFormativas.length > 25"
             :rows="25"
@@ -53,7 +55,8 @@
             :loading="loading"
             :showFilterMenu="false"
         >
-            <Column field="denominacion" header="Denominación" sortable>
+            <Column selectionMode="multiple" headerStyle="width:3rem"></Column>
+        <Column field="denominacion" header="Denominación" sortable>
                 <template #body="slotProps">
                     <span>{{ slotProps.data.denominacion }}</span>
                 </template>
@@ -134,7 +137,7 @@ import { useToast } from 'primevue/usetoast'
 import axios from 'axios' 
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
-
+const selectedAcciones=ref([])
 const router = useRouter()
 const store = useStore()
 const toast = useToast()
@@ -198,7 +201,46 @@ watch(() => filters.value.expediente_plan.value, (newValue) => {
         store.clearActivePlan()
     }
 })
+const descargarXMLSeleccionadas = async () =>{
+    if(!selectedAcciones.value.length){
+        toast.add({
+            severity:'warn',
+            summary: 'Sin selección',
+            detail: 'Selecciona al menos una acción formativa',
+            life:3000
+        })
+        return
+    }
+try {
+  for (const accion of selectedAcciones.value) {
+    const response = await axios.get(
+      `/api/acciones-formativas/${accion.id_accion}/aaff-xml`,
+      {
+        responseType: 'blob'
+      }
+    )
 
+    const blob = new Blob([response.data], { type: 'application/xml' })
+    const url = window.URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `AAFF_${accion.numero_accion || accion.id_accion}.xml`
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    window.URL.revokeObjectURL(url)
+  }
+
+  toast.add({
+    severity: 'success',
+    summary: 'Descarga completada',
+    detail: 'Los XML oficiales se han descargado correctamente',
+    life: 3000
+  })
+}
 const handleSaveAccionFormativa = async (accionData) => {
     try {
        const newAccion = await createAccionFormativa(accionData)
