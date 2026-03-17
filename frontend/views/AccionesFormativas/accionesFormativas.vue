@@ -240,6 +240,15 @@ try {
     detail: 'Los XML oficiales se han descargado correctamente',
     life: 3000
   })
+} catch (error) {
+  console.error(error)
+
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: 'No se pudieron descargar los XML',
+    life: 3000
+  })
 }
 const handleSaveAccionFormativa = async (accionData) => {
     try {
