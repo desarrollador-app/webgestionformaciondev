@@ -6,7 +6,7 @@
             </div>
             <div class="section-header__actions">
                 <Button 
-                    label="Descargar XML"
+                    label="Descargar XML masivo"
                     :disabled="!selectedGrupos.length"
                     @click="exportXML"
                 />
