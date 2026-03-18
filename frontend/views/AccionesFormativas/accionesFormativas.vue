@@ -97,6 +97,13 @@
                                 outlined
                             />
                         </a>
+                         <Button 
+                                label="Borrar" 
+                                size="small" 
+                                outlined
+                                severity="Danger"
+                                @click="confirmDeleteAcccion(slotProps.data.id_accion)"
+                            />
                         <Button 
                             label="Duplicar"
                             size="small"
@@ -120,6 +127,7 @@
 </template>
 
 <script setup>
+
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/stores/main.js'
@@ -135,6 +143,7 @@ import { createAccionFormativa } from '@/services/accionesFormativasService.js'
 import { getAllPlans } from '@/services/plansService.js'
 import { useToast } from 'primevue/usetoast'
 import axios from 'axios' 
+import {useAuthStore} from '@/stores/auth.js' 
 import ConfirmDialog from 'primevue/confirmdialog'
 import { useConfirm } from 'primevue/useconfirm'
 const selectedAcciones=ref([])
@@ -142,6 +151,7 @@ const router = useRouter()
 const store = useStore()
 const toast = useToast()
 const confirm = useConfirm()
+const authStore=useAuthStore()
 
 const { accionesFormativas, loading, error, fetchAccionesFormativas } = useAccionesFormativas()
 
@@ -250,6 +260,54 @@ try {
     life: 3000
   })
 }
+}
+// Añadimos función para popup de confirmación de eliminar
+const confirmDeleteAccion = (id) => {
+  console.log('1. Botón de borrar pulsado para el ID:', id) // A ver si llega el ID bien
+
+  confirm.require({
+    message: '¿Estás seguro de que quieres eliminar esta acción formativa? Esta acción no se puede deshacer.',
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    acceptClass: 'p-button-danger',
+    acceptLabel: 'Eliminar',
+    rejectLabel: 'Cancelar',
+
+    accept: async () => {
+      console.log('2. Has pulsado Eliminar en el popup. Intentando borrar...')
+      try {
+        const usuarioQueBorra = authStore.user?.id || 'Desconocido'
+        console.log('3. Usuario que borra:', usuarioQueBorra)
+
+        // Hacemos la llamada al backend
+        const response = await axios.delete(`/api/acciones-formativas/${id}`, {
+          data: { borrado_por_azure_id: usuarioQueBorra }
+        })
+        console.log('4. Respuesta del servidor:', response.data)
+
+        // Lo quitamos visualmente
+        accionesFormativas.value = accionesFormativas.value.filter(a => a.id_accion !== id)
+
+        toast.add({
+          severity: 'success',
+          summary: 'Eliminada',
+          detail: 'La acción formativa se ha eliminado correctamente',
+          life: 3000
+        })
+
+      } catch (error) {
+        // AQUÍ CAZAREMOS EL ERROR REAL
+        console.error('ERROR AL ELIMINAR:', error.response?.data || error.message)
+
+        toast.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo eliminar la acción formativa',
+          life: 3000
+        })
+      }
+    }
+  })
 }
 const handleSaveAccionFormativa = async (accionData) => {
     try {

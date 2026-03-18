@@ -34,7 +34,9 @@ const getAllAccionesFormativas = async (req, res) => {
     }
     
     // Construir filtros dinámicos
-    const whereClause = {};
+    const whereClause = {
+      fecha_borrado:null
+    };
     
     // Filtros por campos específicos
     if (filters.id_plan) {
@@ -261,6 +263,7 @@ const updateAccionFormativa = async (req, res) => {
 const deleteAccionFormativa = async (req, res) => {
   try {
     const { id } = req.params;
+    const { borrado_por_azure_id } = req.body;
 
 
     const grupos = await prisma.grupos.findMany({
@@ -272,9 +275,14 @@ const deleteAccionFormativa = async (req, res) => {
         error: 'No se puede eliminar la acción formativa porque tiene grupos asociados' 
       });
     }
+    const usuarioIdStr = borrado_por_azure_id ? String(borrado_por_azure_id) :'Desconocido';
 
     await prisma.accionesFormativas.delete({
-      where: { id_accion: parseInt(id) }
+      where: { id_accion: parseInt(id) },
+      data: {
+ fecha_borrado:new Date(),
+ borrado_por_azure_id:usuarioIdStr
+      }
     });
 
     res.status(204).send();

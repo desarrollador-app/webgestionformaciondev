@@ -76,6 +76,8 @@ model AccionesFormativas {
   desgloseAreasProfesionales    DesgloseAreasProfesionales? @relation(fields: [id_desglose], references: [id_desglose], onDelete: NoAction, onUpdate: NoAction, map: "FK_AccionesFormativas_id_desglose")
   plan                          Planes?                     @relation(fields: [id_plan], references: [id_plan], onDelete: NoAction, onUpdate: NoAction, map: "FK_AccionesFormativas_id_plan")
   grupos                        Grupos[]
+  fecha_borrado  DateTime?
+  borrado_por_azure_id String? @db.NVarChar(100)
 
   @@index([id_area], map: "IX_AccionesFormativas_id_area")
   @@index([id_desglose], map: "IX_AccionesFormativas_id_desglose")
