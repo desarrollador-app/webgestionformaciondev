@@ -34,12 +34,13 @@
             >
             <!-- Creamos una columna para poner un número para facilitar el conteo -->
                 <Column header="Nº"><template #body="slotProps">{{ slotProps.index + 1 }}</template></Column>
-
+            <Column field="persona.apellido1" header="Primer Apellido" sortable></Column>
+               <Column field="persona.apellido2" header="Segundo Apellido" sortable></Column>
                 <Column field="persona.nombre" header="Nombre" sortable></Column>
 
-                <Column field="persona.apellido1" header="Primer Apellido" sortable></Column>
+    
 
-                <Column field="persona.apellido2" header="Segundo Apellido" sortable></Column>
+             
                 
                 
                 <Column field="persona.documento" header="Documento" sortable>
@@ -701,9 +702,11 @@ const exportToExcel = () => {
     //Transformación de datos a map para cada columna
     const datos = alumnos.value.map((a, index) => ({
         "Nº": index + 1,
+              "Primer Apellido": a.persona?.apellido1 || "",
+               "Segundo Apellido": a.persona?.apellido2 || "",
         "Nombre": a.persona?.nombre || "",
-        "Primer Apellido": a.persona?.apellido1 || "",
-        "Segundo Apellido": a.persona?.apellido2 || "",
+  
+       
         "Documento": a.persona?.documento || "",
         "Centro de trabajo": a.centro?.empresa?.razon_social 
             ? a.centro.empresa.razon_social + " - " + (a.centro?.nombre || "")

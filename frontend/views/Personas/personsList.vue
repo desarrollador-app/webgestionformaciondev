@@ -58,24 +58,25 @@
             :globalFilterFields="['nombre', 'apellido1', 'apellido2', 'documento', 'NSS', 'es_docente', 'es_alumno']"
             dataKey="id_persona"
             :loading="loading"
-        >
-            <Column field="nombre" header="Nombre" sortable>
-                <template #body="slotProps">
-                    <span>{{ slotProps.data.nombre }}</span>
-                </template>
-            </Column>
-            
+        >  
             <Column field="apellido1" header="Apellido 1" sortable>
                 <template #body="slotProps">
                     <span>{{ slotProps.data.apellido1 }}</span>
                 </template>
             </Column>
-            
-            <Column field="apellido2" header="Apellido 2" sortable>
+             <Column field="apellido2" header="Apellido 2" sortable>
                 <template #body="slotProps">
                     <span>{{ slotProps.data.apellido2 || '-' }}</span>
                 </template>
             </Column>
+            <Column field="nombre" header="Nombre" sortable>
+                <template #body="slotProps">
+                    <span>{{ slotProps.data.nombre }}</span>
+                </template>
+            </Column>
+           
+            
+           
             
             <Column field="documento" header="Documento" sortable>
                 <template #body="slotProps">

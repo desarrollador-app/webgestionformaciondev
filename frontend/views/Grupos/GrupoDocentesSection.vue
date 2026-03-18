@@ -18,11 +18,13 @@
                 :loading="docentesLoading"
                 emptyMessage="No hay docentes en este grupo"
             >
+                     <Column field="persona.apellido1" header="Primer Apellido" sortable></Column>
+                       <Column field="persona.apellido2" header="Segundo Apellido" sortable></Column>
                 <Column field="persona.nombre" header="Nombre" sortable></Column>
 
-                <Column field="persona.apellido1" header="Primer Apellido" sortable></Column>
+       
 
-                <Column field="persona.apellido2" header="Segundo Apellido" sortable></Column>
+              
                 
                 
                 <Column field="persona.documento" header="Documento" sortable>
