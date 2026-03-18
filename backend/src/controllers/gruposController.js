@@ -3,6 +3,138 @@ const grupoModel = require('../models/grupoModel');
 const { MODALIDAD_DOCENTE, ESTADO_CURSO } = require('../utils/constants');
 const pdfService = require('../services/pdfService');
 const { getUsuarioNombre, truncateString } = require('../utils/utils');
+const archiver = require('archiver'); //Importamos 'archiver' para poder comprimir los múltiples PDFs en un archivo ZIP
+/**
+ * Genera y sirve el diploma en PDF de un alumno especifico.
+ * Utiliza Prisma para obtener los datos y PDF Service para la generación visual
+ */
+const downloadDiplomasIndividual = async (req, res) =>{
+	 try {
+    const { id, id_alumno } = req.params;
+
+    // Buscamos el registro del alumno en el grupo incluyendo su información personal
+    // y los detalles de la acción formativa asociada al grupo.
+    const alumnoGrupo = await prisma.alumnosPersonaGrupo.findUnique({
+      where: { id_alumno_grupo: parseInt(id_alumno) },
+      include: {
+        persona: true,
+        grupo: {
+          include: { accionFormativa: true }
+        }
+      }
+    });
+
+    // Validación de existencia del registro
+    if (!alumnoGrupo) return res.status(404).json({ error: 'Alumno no encontrado' });
+
+    const grupo = alumnoGrupo.grupo;
+
+    // Mapeamos los datos del alumno al formato que espera el generador de PDFs
+    const alumnoData = {
+      nombre: `${alumnoGrupo.persona.nombre || ''} ${alumnoGrupo.persona.apellido1 || ''} ${alumnoGrupo.persona.apellido2 || ''}`.trim(),
+      documento: alumnoGrupo.persona.documento || 'Sin NIF'
+    };
+
+    // Mapeamos los datos del curso/grupo, gestionando posibles nulos y valores por defecto
+    const grupoData = {
+      denominacion: grupo.accionFormativa?.denominacion || grupo.denominacion || 'Curso de Praxis',
+      horas: grupo.accionFormativa?.horas_modalidad_presencial || grupo.accionFormativa?.horas_modalidad_teleformacion || 0,
+      modalidad: grupo.accionFormativa?.modalidad || 'Presencial',
+      modalidadDiploma: grupo.accionFormativa?.modalidad_diploma || '',
+      desgloseHorasDiploma: grupo.accionFormativa?.desglose_horas_diploma || '',
+      lugarFechaDiploma: `A Coruña, a ${new Date().toLocaleDateString('es-ES')}`,
+      centro: grupo.centro_nombre || 'CENTRO DE FORMACIÓN PRAXIS',
+      direccion: grupo.centro_direccion || 'Avda. de Oza, 16, 15006 A Coruña'
+    };
+// Llamamos al servicio de PDF para generar el buffer (el archivo en memoria)
+const pdfBuffer = await pdfService.generateDiplomaFront(alumnoData, grupoData);
+
+// Formateamos el nombre del archivo final
+const fileName = `Diploma_${alumnoData.nombre.replace(/\s+/g, '_')}.pdf`;
+
+// Configuramos las cabeceras HTTP para indicar al navegador que es un PDF y forzar descarga
+res.setHeader('Content-Type', 'application/pdf');
+res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+res.setHeader('Content-Length', pdfBuffer.length);
+
+// Enviamos el chorro de datos (buffer) al cliente
+res.send(pdfBuffer);
+
+} catch (error) {
+  console.error('Error al generar diploma individual:', error);
+  res.status(500).json({ error: 'Error interno al procesar el diploma' });
+} 
+};
+/**
+ * Genera un archivo ZIP que empaqueta todos los diplomas del grupo actual.
+ * Filtra automáticamente a los alumnos con estado "No Participa".
+ */
+const downloadDiplomasMasivo = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Obtenemos el grupo y su lista de alumnos participantes (excluyendo bajas/no participantes)
+    const grupo = await prisma.grupos.findUnique({
+      where: { id_grupo: parseInt(id) },
+      include: {
+        accionFormativa: true,
+        alumnosPersonaGrupo: {
+          where: { estado_curso: { not: ESTADO_CURSO.NO_PARTICIPA } },
+          include: { persona: true }
+        }
+      }
+    });
+
+    // Validación de seguridad: si no hay alumnos, no tiene sentido generar un ZIP vacío
+    if (!grupo || !grupo.alumnosPersonaGrupo || grupo.alumnosPersonaGrupo.length === 0) {
+      return res.status(400).json({ error: 'El grupo no tiene alumnos participantes para generar diplomas' });
+    }
+
+    // Preparamos las cabeceras para un archivo de tipo ZIP
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="Diplomas_Grupo_${grupo.codigo || id}.zip"`);
+
+    // Inicializamos el archivador (empaquetador) y lo conectamos directamente a la respuesta HTTP
+    const archive = archiver('zip', { zlib: { level: 9 } }); // Nivel 9 = Máxima compresión
+    archive.pipe(res);
+
+    // Datos comunes del curso que se repetirán en todos los diplomas
+    const grupoData = {
+      denominacion: grupo.accionFormativa?.denominacion || grupo.denominacion || 'Curso de Praxis',
+      horas: grupo.accionFormativa?.horas_modalidad_presencial || grupo.accionFormativa?.horas_modalidad_teleformacion || 0,
+      modalidad: grupo.accionFormativa?.modalidad || 'Presencial',
+      modalidadDiploma: grupo.accionFormativa?.modalidad_diploma || '',
+      desgloseHorasDiploma: grupo.accionFormativa?.desglose_horas_diploma || '',
+      lugarFechaDiploma: `A Coruña, a ${new Date().toLocaleDateString('es-ES')}`,
+      centro: grupo.centro_nombre || 'CENTRO DE FORMACIÓN PRAXIS',
+      direccion: grupo.centro_direccion || 'Avda. de Oza, 16, 15006 A Coruña'
+    };
+// Iteramos por cada alumno, generamos su PDF individual y lo inyectamos en el archivo ZIP
+for (const alumnoGrupo of grupo.alumnosPersonaGrupo) {
+  const alumnoData = {
+    nombre: `${alumnoGrupo.persona.nombre || ''} ${alumnoGrupo.persona.apellido1 || ''} ${alumnoGrupo.persona.apellido2 || ''}`.trim(),
+    documento: alumnoGrupo.persona.documento || 'Sin NIF'
+  };
+
+  // Generamos el buffer del PDF para este alumno concreto
+  const pdfBuffer = await pdfService.generateDiplomaFront(alumnoData, grupoData);
+
+  // Añadimos el buffer al archivador con un nombre de archivo único dentro del ZIP
+  const internalFileName = `Diploma_${alumnoData.nombre.replace(/\s+/g, '_')}.pdf`;
+  archive.append(pdfBuffer, { name: internalFileName });
+}
+
+// Finalizamos el proceso de compresión. Esto cierra el stream y completa la descarga.
+await archive.finalize();
+
+} catch (error) {
+  console.error('Error al generar descarga masiva de diplomas:', error);
+  // Si el stream de datos ya ha comenzado, no podemos enviar una respuesta JSON normal
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Error crítico al generar el archivo ZIP de diplomas' });
+  }
+}
+};
 
 /**
  * Filtra los datos de actualización basándose en los campos permitidos
@@ -1575,15 +1707,18 @@ const downloadRecibiDiploma = async (req, res) => {
 };
 
 module.exports = {
-	getAllGrupos,
-	getGrupoById,
-	createGrupo,
-	updateGrupo,
-	deleteGrupo,
-	getNextGroupCodeEndpoint,
-	generateFundaeInicioGrupoXML,
-	generateFundaeFinGrupoXML,
-	downloadRecibiMaterial,
-	downloadRecibiDiploma,
-	downloadControlAsistencia
+ getAllGrupos,
+  getGrupoById,
+  createGrupo,
+  updateGrupo,
+  deleteGrupo,
+  getNextGroupCodeEndpoint,
+  generateFundaeInicioGrupoXML,
+  generateFundaeFinGrupoXML,
+  downloadRecibiMaterial,
+  downloadRecibiDiploma,
+  downloadControlAsistencia,
+  downloadDiplomasIndividual,
+  downloadDiplomasMasivo
+
 };

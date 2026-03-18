@@ -12,7 +12,9 @@ const {
   generateFundaeFinGrupoXML,
   downloadRecibiMaterial,
   downloadRecibiDiploma,
-  downloadControlAsistencia
+  downloadControlAsistencia,
+  downloadDiplomasIndividual,
+  downloadDiplomasMasivo
 } = require('../controllers/gruposController');
 
 router.get('/', requireAuth, getAllGrupos);
@@ -26,5 +28,7 @@ router.get('/:id/control-asistencia', requireAuth, downloadControlAsistencia);
 router.post('/', requireAuth, createGrupo);
 router.put('/:id', requireAuth, updateGrupo);
 router.delete('/:id', requireAuth, deleteGrupo);
+router.get('/:id/alumnos/:id_alumno/diploma',requireAuth,downloadDiplomasIndividual);
+router.get('/:id/diplomas/masivo',requireAuth,downloadDiplomasMasivo);
 
 module.exports = router;

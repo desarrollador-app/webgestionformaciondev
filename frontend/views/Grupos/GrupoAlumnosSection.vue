@@ -91,6 +91,12 @@
                 <Column header="" :exportable="false">
                     <template #body="slotProps">
                         <div class="table-actions">
+                             <Button 
+                                label="Diploma" 
+                                size="small" 
+                                outlined
+                                @click="() => descargarDiplomaIndividual(slotProps.data)"
+                            />
                             <Button 
                                 label="Eliminar" 
                                 size="small" 
@@ -116,6 +122,7 @@
                                     outlined
                                 />
                             </a>
+                            
                         </div>
                     </template>
                 </Column>
@@ -141,6 +148,13 @@
                 class="p-button-sm"
                 @click="exportToExcel"
             />
+             <Button 
+                                    label="Descargar diplomas" 
+                                    @click="descargarDiplomasMasivo"
+                                    :loading ="descargandoDiplomas"
+                                    size="small" 
+                                    outlined
+                                />
         </div>
     </template>
             </DataTable>
@@ -313,6 +327,7 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import * as XLSX from "xlsx"; //importación de xlsx para btn de exportación a excel 
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -393,6 +408,109 @@ const loadAlumnos = async () => {
         console.error('Error al cargar alumnos:', error)
     }
 }
+//NUEVAS FUNCIONES:DESCARGA DE DIPLOMAS
+/**
+ * Estado reactivo para controlar el "spinner" o indicador de carga
+ * en el botón de descarga masiva
+ */
+const descargandoDiplomas = ref(false);
+/**
+ * Descarga el diploma de un alumno especifico en formato PDF
+ * @param {Object} alumno - Datos del alumno seleccionado en la fila de la tabla.
+ */
+const descargarDiplomaIndiividual = async(alumno) => {
+    try{
+        //Solicitamos el archivo al backend indicando explicitamente que la respuesta será un Blob(achivo binario)
+        const response =await axios.get(
+            '/api/grupos/${props.grupoId}/alumnos/`${alumno.id_alumno_grupo}`/diploma',
+            
+            { responseType:'blob'}
+        );
+        //Covertimos los datos binarios en un objeto PDF reconocible por el navegador
+        const blob = new Blob([response.data], {type: 'application/pdf'});
+        const url = window.URL.createObjectURL(blob);
+    
+        //Construimos el nombre del archivo dinámicamente usando los datos del alumno
+        const nombreAlumno = alumno.persona?.nombre || 'Alumno';
+        const apellidoAlumno = alumno.persona?.apellido1 || '';
+        //Reemplazamos los espacios por barras bajas para evitar nombres de archivo problemáticos
+        const nombreArchivo ='Diploma_${nombrealumno}_${apellidoAlumno}.pdf'.replace(/\s+/g,'_');
+
+        //Creamos un enlace <a> invisible, le asignamos la URL y forzamos el clic para iniciar la descarga
+            const link = document.createElement('a');
+            link.href = url;
+            link.download =nombreArchivo;
+            document.body.appendChild(link);
+            link.click();
+
+            //Borramos el enlace y liberamos la memoria del navegador
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            //Notificamos al usuario que la operacion ha sido un exito
+            toast.add({
+                severity:'success',
+                summary:'Éxito',
+                detail: 'Diploma descargado correctamente',
+                life: 3000
+            });
+
+    }catch(error){
+        console.error('Error al descargar diploma:',error);
+        toast.add({
+            severity:'error',
+            summary:'error',
+            detail:'No se pudo descargar el diploma',
+            life:4000
+        });
+    }
+};
+/**
+ * Validos (no dados de baja) del grupo actual
+ */
+const  descargarDiplomasMasivo = async () =>{
+    //Activamos el estado de carga para bloquear el botón visualmente
+    descargandoDiplomas.value = true;
+    try{
+        //Solicitamos el archivo comprimido al backend
+        const response = await axios.get(
+            '/api/grupos/${props.grupoId}/diplomas/masivo',
+            {responseType:'blob'}
+        );
+        //En este caso convertimos la respuesta en un objeto ZIP
+        const blob =new Blob([response.data],{type:'application/zip'});
+        const url = window.URL.createObjectURL(blob);
+
+        //Forzamos la descarga mediante el enlace <a> invisible
+            const link =document.createElement('a');
+            link.href= url;
+            link.download ='Diplomas_grupo_${props.grupoId}.zip';
+
+            document.body.appendChild(link);
+            link.click();
+            //limpieza de memoria
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            toast.add({
+                severity:'success',
+                summary:'Exito',
+                detail: 'Todos los diplomas fueron descargados correctamente',
+                life:3000
+            });
+    }catch(error){
+        console.error('Error al descargar diplomas masivos:', error);
+        toast.add({
+          severity:'error',
+          summary:'Error',
+          detail: 'No se pudieron descargar los diplomas del grupo',
+          life:4000
+        });
+    }finally{
+        //Ocurra lo que ocurra(éxito o error de red), nos aseguramos de apagar el spinner de carga
+        descargandoDiplomas.value =false;
+
+    }
+};
 
 const getNombreCompleto = (persona) => {
     if (!persona) return '-'
