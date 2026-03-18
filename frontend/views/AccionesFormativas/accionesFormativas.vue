@@ -296,7 +296,7 @@ const confirmDeleteAccion = (id) => {
         })
 
       } catch (error) {
-        // AQUÍ CAZAREMOS EL ERROR REAL
+        // AQUÍ tenemos el error real
         console.error('ERROR AL ELIMINAR:', error.response?.data || error.message)
 
         toast.add({
