@@ -97,6 +97,12 @@
                                 outlined
                             />
                         </a>
+                             <Button 
+                                label="XML" 
+                                size="small" 
+                                outlined
+                                @click="descargarXMLAccion(slotProps.data)"
+                            />
                          <Button 
                                 label="Borrar" 
                                 size="small" 
@@ -347,7 +353,46 @@ const viewAccionFormativa = (accionId) => {
     }
     router.push(`/acciones-formativas/${accionId}`)
 }
+// Función para descargar el XML de una sola acción formativa
+const descargarXMLAccion = async (accion) => {
+  try {
+    const response = await axios.get(
+      `/api/acciones-formativas/${accion.id_accion}/aaff-xml`,
+      { responseType: 'blob' }
+    )
 
+    const blob = new Blob([response.data], { type: 'application/xml' })
+    const url = window.URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    // Usamos el número de acción para el nombre del archivo (o el ID si no tiene número)
+    link.download = `AAFF_${accion.numero_accion || accion.id_accion}.xml`
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    window.URL.revokeObjectURL(url)
+
+    toast.add({
+      severity: 'success',
+      summary: 'Descarga completada',
+      detail: 'El XML se ha descargado correctamente',
+      life: 3000
+    })
+
+  } catch (error) {
+    console.error(error)
+
+    toast.add({
+      severity: 'error',
+      summary: 'Error al descargar',
+      detail: error.response?.data?.error || 'No se pudo descargar el XML',
+      life: 4000
+    })
+  }
+}
 
 const duplicarAccion = async (id) => {
    confirm.require({
