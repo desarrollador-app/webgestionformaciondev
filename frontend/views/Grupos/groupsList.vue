@@ -146,6 +146,13 @@
             <Column header="" :exportable="false">
                 <template #body="slotProps">
                     <div class="table-actions">
+                        <Button
+                           label="Eliminar" 
+                                size="small" 
+                                outlined
+                                severity="danger"
+                                @click="confirmDeleteGrupo(slotProps.data)"
+                         />
                         <a :href="`/grupos/${slotProps.data.id_grupo}`">
                             <Button 
                                 label="Ver" 
@@ -170,6 +177,8 @@
 </template>
 
 <script setup>
+import {deleteGrupo} from '@/services/gruposService.js'
+import{useConfirm} from 'primevue/useconfirm'
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/stores/main.js'
@@ -292,7 +301,44 @@ const applyPlanFilter = () => {
         planFilter.value = store.activePlan.id_plan
     }
 }
+const confirm= useConfirm();
+//Función para DIÁLOGO DE CONFIRMACIÓN de eliminacion de grupo
+const  confirmDeleteGrupo = (grupo) =>{
+    confirm.require({
+        message:'¿Seguro que quieres eliminar el grupo"${grupo.denominacion}"?',
+        header:'Confirmar eliminación',
+        acceptLabel:"Eliminar",
+        rejectLabel: 'Cancelar',
+        acceptClass:'p button danger',
+        accept:() => deleteGrupoHandler(grupo)
+    })
 
+}
+//Funcion para eliminar el Grupo desde LISTA de TABLA
+const deleteGrupoHandler = async(grupo) =>{
+    try{
+        await deleteGrupo(grupo.id_grupo)
+        //Quitar de la tabla sin recargar
+        grupos.value = grupos.value.filter(g => g.id_grupo!==grupo.id_grupo)
+        //Toast de confirmacion
+        toast.add({
+            severity:'success',
+            summary:'Grupo eliminado',
+            detail:'El grupo "${grupo.denominacion}"se eliminó correctamente',
+            life:3000
+        })
+    }catch(error){
+        console.error('Error al eliminar grupo:', error)
+        toast.add({
+            severity:'error',
+            summary:'Error',
+            detail:'No se pudo eliminar el grupo',
+            life:3000
+        }
+
+        )
+    }
+}
 const handleCancelGrupo = () => {
     showModal.value = false
     //Todo: reset form data
