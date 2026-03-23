@@ -7,6 +7,7 @@
             <div class="section-header__actions">
                 <Button label="Descargar XML de AFF" @click= "descargarXMLSeleccionadas"/>
                 <Button label="Nueva Acción formativa" @click="showModal = true"/>
+           <Button label="Borrar masivo" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedAcciones || !selectedAcciones.length" />
             </div>
         </div>
         
@@ -163,6 +164,59 @@ const { accionesFormativas, loading, error, fetchAccionesFormativas } = useAccio
 
 const showModal = ref(false)
 const planes = ref([])
+//Función para borrar múltiples acciones seleccionadas
+const confirmDeleteSelected  = () => {
+const seleccionados= selectedAcciones.value;
+const ids = seleccionados.map(a => a.id_accion);
+
+confirm.require({
+  message: '¿Estás seguro de que quieres eliminar las ${sele...',
+  header: 'Confirmar eliminación múltiple',
+  icon: 'pi pi-exclamation-triangle',
+  acceptClass: 'p-button-danger',
+  acceptLabel: 'Eliminar todas',
+  rejectLabel: 'Cancelar',
+    accept: async () =>{
+        try{
+            const usuarioQueBorra = authStore.user?.id || 'Desconocido';
+ //Ejecutamos todos los borrados en paralelo usando la ruta individual que ya tienes
+ const promesas = ids.map(id =>
+    axios.delete('/api/acciones-formativas(${id}',{
+        data:{ borrado_por_azure_id:usuarioQueBorra }
+
+    })
+ );
+ await Promise.all(promesas);
+
+ //Si todo sale bien, filtramos la tabla
+ accionesFormativas.value = accionesFormativas.value.filter(
+    a => !ids.includes(a.id_accion)
+ );
+ selectedAcciones.value =[];
+ toast.add({
+    severity:'success',
+    summary:'éxito',
+    detail:'Todas las acciones seleccionadas han sido eliminadas',
+    life:3000
+ });
+        }catch (error) {
+            console.error('ERROR AL ELIMINAR:', error);
+            toast.add({
+                severity:'error',
+                summary:'Error',
+                detail:'Algunas acciones no pudieron eliminarse',
+                life:3000
+            });
+            //Refrescamos la lista por si acaso algunos si se borraron
+            fetchAccionesFormativas();
+        }
+    }
+
+    });
+
+};
+
+
 
 const filters = ref({
     global: { value: null, matchMode: 'contains' },
